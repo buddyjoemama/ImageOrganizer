@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration host="192.168.86.164" rootPath="Public\Media\Pictures" recursive="true" maxThreads="10" monitor="false">
+  <searchTypes>
+    <add key=".jpg"></add>
+    <add key=".avi"></add>
+  </searchTypes>
+
+  <ignoreTypes>
+    <add key="^."></add>
+  </ignoreTypes>
+
+  <archive destination="192.168.86.164" path="Public\Media\Pictures\Archive" retain="true" index="true"
+              namingConvention="mm-dd-yyyy_{ticks}"/>
+</configuration>
