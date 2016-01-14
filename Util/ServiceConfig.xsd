@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="ServiceConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SearchTypes" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SearchType" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="IgnoreTypes" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IgnoreType" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="archive" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="destination" type="xs:string" />
+            <xs:attribute name="path" type="xs:string" />
+            <xs:attribute name="retain" type="xs:string" />
+            <xs:attribute name="index" type="xs:string" />
+            <xs:attribute name="namingConvention" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="host" type="xs:string" />
+      <xs:attribute name="rootPath" type="xs:string" />
+      <xs:attribute name="recursive" type="xs:string" />
+      <xs:attribute name="maxThreads" type="xs:string" />
+      <xs:attribute name="monitor" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ServiceConfiguration" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

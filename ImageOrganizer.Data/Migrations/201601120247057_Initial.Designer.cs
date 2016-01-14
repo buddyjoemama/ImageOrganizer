@@ -13,7 +13,7 @@ namespace ImageOrganizer.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201601102030363_Initial"; }
+            get { return "201601120247057_Initial"; }
         }
         
         string IMigrationMetadata.Source

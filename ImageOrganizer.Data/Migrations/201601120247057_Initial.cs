@@ -13,10 +13,12 @@ namespace ImageOrganizer.Data.Migrations
                     {
                         MediaFileId = c.Guid(nullable: false, identity: true),
                         OriginalFileName = c.String(nullable: false, maxLength: 250),
-                        OriginalFilePath = c.String(nullable: false, maxLength: 1024),
+                        OriginalFilePath = c.String(nullable: false, maxLength: 900),
                         FileName = c.String(nullable: false, maxLength: 250),
-                        TargetFilePath = c.String(nullable: false, maxLength: 1024),
+                        TargetFilePath = c.String(nullable: false, maxLength: 900),
+                        ContentHash = c.String(maxLength: 500),
                         MarkForDelete = c.Boolean(nullable: false),
+                        OriginalDeleteDateTime = c.DateTime(),
                         ArchiveDateTime = c.DateTime(nullable: false),
                         CreatedDateTime = c.DateTime(nullable: false),
                     })
