@@ -6,9 +6,10 @@
   </SearchTypes>
 
   <IgnoreTypes>
-    <IgnoreType key="^."></IgnoreType>
+    <IgnoreType key="^\."></IgnoreType>
+    <IgnoreType key="_face\d.jpg"></IgnoreType>
   </IgnoreTypes>
 
-  <archive destination="192.168.86.164" path="Public\Media\Pictures\Archive" retain="false" index="true"
+  <archive destination="192.168.86.164" path="Public\Media\Pictures_Archive" retain="false" index="true"
               namingConvention="mm-dd-yyyy_{ticks}"/>
 </ServiceConfiguration>
