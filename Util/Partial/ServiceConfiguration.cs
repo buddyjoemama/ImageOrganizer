@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImageOrganizer.Data;
+using ImageOrganizer.Data.Entites;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,7 +58,7 @@ namespace Util
                 IgnoreTypes.Select(s => s.key).None(file);
         }
 
-        public void ArchiveFile(DateTime fileCreateTime, String fileFullPath)
+        public void ArchiveFile(DateTime fileCreateTime, String fileFullPath, String hash)
         {
             String ext = Path.GetExtension(fileFullPath);
             String folder = GetFolderName(fileCreateTime);
@@ -66,7 +68,7 @@ namespace Util
 
             if (Directory.Exists(targetDir))
             {
-                CopyOrMove(fileFullPath, targetFile);
+                CopyOrMove(fileFullPath, targetFile, hash);
             }
             else
             {
@@ -75,15 +77,34 @@ namespace Util
                     Directory.CreateDirectory(targetDir);
                 }
 
-                CopyOrMove(fileFullPath, targetFile);
+                CopyOrMove(fileFullPath, targetFile, hash);
             }
         }
 
-        private void CopyOrMove(String fileFullPath, String targetFile)
+        private void CopyOrMove(String fileFullPath, String targetFile, String hash)
         {
             try
             {
                 File.Copy(fileFullPath, targetFile, true);
+
+                using (OrganizerDatabaseContext context = new OrganizerDatabaseContext())
+                {
+                    bool retain = true;
+                    if (!bool.TryParse(archive.retain, out retain))
+                        retain = true;
+
+                    MediaFile mediaFile = new MediaFile();
+                    mediaFile.ArchiveDateTime = DateTime.UtcNow;
+                    mediaFile.ContentHash = hash;
+                    mediaFile.CreatedDateTime = DateTime.UtcNow;
+                    mediaFile.MarkForDelete = retain;
+                    mediaFile.OriginalFileName = fileFullPath;
+                    mediaFile.TargetFileName = targetFile;
+
+                    context.MediaFiles.Add(mediaFile);
+
+                    context.SaveChanges();
+                }
             }
             catch { }
         }

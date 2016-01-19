@@ -19,21 +19,13 @@ namespace ImageOrganizer.Data.Entites
         [Index]
         public String OriginalFileName { get; set; }
 
-        [MaxLength(900)]
-        [Required]
-        [Index]
-        public String OriginalFilePath { get; set; }
-
         [MaxLength(250)]
         [Required]
-        public String FileName { get; set; }
-
-        [MaxLength(900)]
-        [Required]
         [Index]
-        public String TargetFilePath { get; set; }
+        public String TargetFileName { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(50)]
+        [Index(IsUnique =true)]
         public String ContentHash { get; set; }
 
         public bool MarkForDelete { get; set; }

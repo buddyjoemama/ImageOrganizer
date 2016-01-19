@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -46,7 +47,7 @@ namespace ImageOrganizerService
                 directories.Add(directory);
             }
 
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 20; i++)
             {
                 Thread thread = new Thread(new ThreadStart(Run));
                 thread.Start();
@@ -57,6 +58,8 @@ namespace ImageOrganizerService
 
         static void Run()
         {
+            MD5 hasher = MD5.Create();
+
             String dir = null;
             while((dir = directories.Take()) != null)
             {
@@ -69,21 +72,28 @@ namespace ImageOrganizerService
 
                     foreach(var file in validFiles)
                     {
+                        String hash = null;
+
                         try
                         {
                             DateTime? dt = null;
                             var extension = Path.GetExtension(file).ToLower();
 
-                            switch (extension)
+                            using (FileStream stream = File.Open(file, FileMode.Open))
                             {
-                                case ".jpg":
-                                    using (FileStream stream = File.Open(file, FileMode.Open))
-                                    using (Bitmap image = (Bitmap)Bitmap.FromStream(stream))
-                                    {
-                                        var data = TagParser.Parse<ExifTags>(image.PropertyItems.ToList());
-                                        dt = data.FileChangeDateTime;
-                                    }
-                                    break;
+                                switch (extension)
+                                {
+                                    case ".jpg":
+                                        using (Bitmap image = (Bitmap)Bitmap.FromStream(stream))
+                                        {
+                                            var data = TagParser.Parse<ExifTags>(image.PropertyItems.ToList());
+                                            dt = data.FileChangeDateTime;
+                                        }
+                                        break;
+                                }
+
+                                stream.Position = 0;
+                                hash = Convert.ToBase64String(hasher.ComputeHash(stream));
                             }
 
                             if (dt == null)
@@ -92,7 +102,7 @@ namespace ImageOrganizerService
                             }
 
                             if (dt != null)
-                                config.ArchiveFile(dt.Value, file);
+                                config.ArchiveFile(dt.Value, file, hash);
                         }
                         catch(Exception e)
                         {

@@ -13,10 +13,8 @@ namespace ImageOrganizer.Data.Migrations
                     {
                         MediaFileId = c.Guid(nullable: false, identity: true),
                         OriginalFileName = c.String(nullable: false, maxLength: 250),
-                        OriginalFilePath = c.String(nullable: false, maxLength: 900),
-                        FileName = c.String(nullable: false, maxLength: 250),
-                        TargetFilePath = c.String(nullable: false, maxLength: 900),
-                        ContentHash = c.String(maxLength: 500),
+                        TargetFileName = c.String(nullable: false, maxLength: 250),
+                        ContentHash = c.String(maxLength: 50),
                         MarkForDelete = c.Boolean(nullable: false),
                         OriginalDeleteDateTime = c.DateTime(),
                         ArchiveDateTime = c.DateTime(nullable: false),
@@ -24,15 +22,15 @@ namespace ImageOrganizer.Data.Migrations
                     })
                 .PrimaryKey(t => t.MediaFileId)
                 .Index(t => t.OriginalFileName)
-                .Index(t => t.OriginalFilePath)
-                .Index(t => t.TargetFilePath);
+                .Index(t => t.TargetFileName)
+                .Index(t => t.ContentHash, unique: true);
             
         }
         
         public override void Down()
         {
-            DropIndex("dbo.MediaFiles", new[] { "TargetFilePath" });
-            DropIndex("dbo.MediaFiles", new[] { "OriginalFilePath" });
+            DropIndex("dbo.MediaFiles", new[] { "ContentHash" });
+            DropIndex("dbo.MediaFiles", new[] { "TargetFileName" });
             DropIndex("dbo.MediaFiles", new[] { "OriginalFileName" });
             DropTable("dbo.MediaFiles");
         }

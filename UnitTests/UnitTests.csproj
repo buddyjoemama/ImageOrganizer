@@ -57,10 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{712f192a-be74-4607-85bb-f347c042e6e8}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ImageOrganizer.Data\ImageOrganizer.Data.csproj">
       <Project>{1052c9f5-15df-4ac8-8123-81185d1a99d7}</Project>
       <Name>ImageOrganizer.Data</Name>
