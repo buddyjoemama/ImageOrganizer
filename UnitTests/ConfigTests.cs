@@ -7,6 +7,8 @@ using Util;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using Newtonsoft.Json;
+using Util.Configuration;
 
 namespace UnitTests
 {
@@ -53,6 +55,14 @@ namespace UnitTests
                     yield return subDir;
                 }
             }
+        }
+
+        [TestMethod]
+        public void TestJson()
+        {
+            var obj = ServiceConfigurationModel.Deserialize();
+
+            Assert.IsNotNull(obj);
         }
     }
 }

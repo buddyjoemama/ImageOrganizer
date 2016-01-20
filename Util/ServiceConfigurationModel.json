@@ -1,0 +1,49 @@
+﻿{
+  "MaxThreads": 10,
+  "Monitor": false,
+  "Archive": {
+    "Destination": "192.168.86.164",
+    "Path": "Public\\Media\\Pictures_Archive"
+  },
+  "SearchLocations": [
+    {
+      "Recurse": true,
+      "Host": "192.168.86.164",
+      "RootPath": "Public\\Media\\Pictures"
+    },
+    {
+      "IsLocal": true,
+      "RootPath": "C:\\Users\\brian\\Pictures\\iCloud Photos\\Downloads",
+      "Recurse": true,
+      "MarkForDeleteOnArchive": true
+    },
+    {
+      "IsLocal": true,
+      "RootPath": "C:\\Users\\brian\\Pictures\\Canon",
+      "Recurse": true,
+      "MarkForDeleteOnArchive": true
+    }
+  ],
+  "SearchTypes": [
+    {
+      "Extension": ".jpg",
+      "Handler": "JpegHandler"
+    },
+    {
+      "Extension": ".avi",
+      "Handler": "AviHandler"
+    },
+    {
+      "Extension": ".mov",
+      "Handler": "MovHandler"
+    }
+  ],
+  "IgnoreTypes": [
+    {
+      "Pattern": "^\\."
+    },
+    {
+      "Pattern": "_face\\d.jpg"
+    }
+  ]
+}

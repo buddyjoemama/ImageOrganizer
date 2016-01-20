@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ImageOrganizer.Data.Entites
 {
-    public class MediaFile
+    public partial class MediaFile
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

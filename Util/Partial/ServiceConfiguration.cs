@@ -52,10 +52,10 @@ namespace Util
 
         public bool IsValidFile(string file)
         {
+
             file = file.ToLower();
 
-            return SearchTypes.Any(s => file.EndsWith(s.key)) &&
-                IgnoreTypes.Select(s => s.key).None(file);
+            return true;
         }
 
         public void ArchiveFile(DateTime fileCreateTime, String fileFullPath, String hash)
@@ -134,13 +134,4 @@ namespace Util
         }
     }
 
-    public static class Extensions
-    {
-        public static bool None(this IEnumerable<String> list, String fileFullPath)
-        {
-            String matcher = Path.GetFileName(fileFullPath);
-
-            return !list.Any(s => Regex.IsMatch(matcher, s));
-        }
-    }
 }

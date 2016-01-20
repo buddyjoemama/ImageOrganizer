@@ -9,7 +9,7 @@ namespace Util
 {
     public static class DirectoryHelper
     {
-        public static IEnumerable<String> ListAllDirectories(String root)
+        private static IEnumerable<String> ListAllDirectories(String root)
         {
             foreach (String dir in Directory.EnumerateDirectories(root))
             {
@@ -19,6 +19,26 @@ namespace Util
                 foreach (String subDir in ListAllDirectories(dir))
                 {
                     yield return subDir;
+                }
+            }
+        }
+
+        public static IEnumerable<String> ListAllDirectories(String root, bool recurse = true)
+        {
+            yield return root;
+
+            if (recurse)
+            {
+                foreach(var dir in ListAllDirectories(root))
+                {
+                    yield return dir;
+                }
+            }
+            else
+            {
+                foreach (var dir in Directory.EnumerateDirectories(root))
+                {
+                    yield return dir;
                 }
             }
         }
