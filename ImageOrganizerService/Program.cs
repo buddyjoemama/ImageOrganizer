@@ -61,7 +61,7 @@ namespace ImageOrganizerService
                 allDirectories.ForEach(s => collection.Add(s));
 
                 // The runners will operate on this blocking collection.
-                for(int i = 0; i < 1; i++)
+                for(int i = 0; i < config.MaxThreads; i++)
                 {
                     Task runner = Task.Run(() =>
                     {
@@ -107,16 +107,15 @@ namespace ImageOrganizerService
             }
         }
 
-        static void MovHandler(String file, SearchLocation config, Archive archive)
+        private static void Archive(String file, DateTime createTime, Archive archive)
         {
-            MD5 hasher = MD5.Create();
-            DateTime createTime = File.GetCreationTime(file);
-
             String ext = Path.GetExtension(file);
             String folder = createTime.GetFolderName();
             String targetDir = Path.Combine(archive.DestinationFullPath, folder);
             String targetFile = Path.Combine(targetDir,
                 $"{createTime.ToString("MM-dd-yyyy")}_{DateTime.UtcNow.Ticks.ToString()}{ext}");
+
+            MD5 hasher = MD5.Create();
 
             // Copy the file if it doesnt already exist.
             try
@@ -157,12 +156,17 @@ namespace ImageOrganizerService
                         {
                             targetFile = existingFile.TargetFileName;
                         }
+                        else
+                        {
+                            Console.WriteLine($"Skipping: {file}.");
+                        }
                     }
                 }
 
                 // Copy it over.
                 try
                 {
+                    Console.WriteLine($"Archiving: {file}.");
                     File.Copy(file, targetFile);
                 }
                 catch
@@ -176,9 +180,26 @@ namespace ImageOrganizerService
             }
         }
 
+        static void MovHandler(String file, SearchLocation config, Archive archive)
+        {
+            //DateTime createTime = File.GetCreationTime(file);
+
+            //Archive(file, createTime, archive);
+        }
+
         static void JpegHandler(String file, SearchLocation config, Archive archive)
         {
+            DateTime createTime = File.GetCreationTime(file);
 
+            using (FileStream stream = File.OpenRead(file))
+            using (Bitmap image = (Bitmap)Bitmap.FromStream(stream))
+            {
+                createTime = TagParser.Parse<ExifTags>(image.PropertyItems.ToList())
+                    .FileChangeDateTime
+                    .GetValueOrDefault(createTime);
+            }
+
+            Archive(file, createTime, archive);
         }
 
         static void Run(Object objEvent)

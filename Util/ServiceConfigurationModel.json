@@ -1,5 +1,5 @@
 ﻿{
-  "MaxThreads": 10,
+  "MaxThreads": 5,
   "Monitor": false,
   "Archive": {
     "Destination": "192.168.86.164",
